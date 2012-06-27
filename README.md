@@ -8,30 +8,30 @@ Usage
 =====
 
 **// init the kernel**
-var mvc = new MiniMVC() 
+> var mvc = new MiniMVC() 
 
 **// create modules**
-var frontend = mvc.get('Module', 'Frontend')
-var backend = mvc.get('Module', 'Backend')
+> var frontend = mvc.get('Module', 'Frontend')
+> var backend = mvc.get('Module', 'Backend')
 
 **// init patterns**
-var controller = frontend.get('Controller')
-var model = frontend.get('Model')
-var view = frontend.get('View')
+> var controller = frontend.get('Controller')
+> var model = frontend.get('Model')
+> var view = frontend.get('View')
 
 **// define a command**
-var command = controller.get('Command', 'MyCommand')
-command.execute = function(note, origin) {
-  console.info('Executed notification from command', note.data())
-}
+> var command = controller.get('Command', 'MyCommand')
+> command.execute = function(note, origin) {
+>   console.info('Executed notification from command', note.data())
+> }
 
 **// define a proxy**
-var proxy = model.get('Proxy', 'MyProxy')
-proxy.data('key', 'value v1')
-proxy.data({'key1': 'value v1', 'key2': 'value v3'})
+> var proxy = model.get('Proxy', 'MyProxy')
+> proxy.data('key', 'value v1')
+> proxy.data({'key1': 'value v1', 'key2': 'value v3'})
 
 **// define a mediator**
-var mediator = view.get('Mediator', 'MyMediator')
+> var mediator = view.get('Mediator', 'MyMediator')
 
 **// Create a notification(last parameter is true, this instances will not be persisted)**
 var notification = frontend.get('Notification', 'MyNotification', true)
