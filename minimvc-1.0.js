@@ -25,10 +25,9 @@
 	makeProto = function() {
 		var p = function() { }
 		p.prototype = {
-			cache: { classes: {}, instances: {}, root: null },
+			cache: { classes: {}, instances: {}, facade: null, handlers: {} },
 			dict: {},
 			container: null,
-			notifications: [],
 			base: null,
 			type: exportType,
 			get: function(type, subtype, isTransient) {
@@ -73,42 +72,56 @@
 					}
 				}
 			},
-			root: function() {
-				var root = null
-				if (this.cache.root == null) {
-					var root = this
-					while (root = root.container) {
-						if (root.container.type == exportType) { 
-							this.cache.root = root
-							break
+			facade: function() {
+				var facade = null
+				if (this.cache.facade == null) {
+					var facade = this
+					if (facade.container) {
+						while (facade = facade.container) {
+							if (facade.container == null || facade.container.type == exportType) { 
+								this.cache.facade = facade
+								break
+							}
 						}
 					}
 				} else {
-					root = this.cache.root
+					facade = this.cache.facade
 				}
-				return root
+				return facade
 			},
 			handle: function(handled) {
-				var self = this, root = this.root()
-				if (root.cache[handled.type] == null) {
-					root.cache[handled.type] = []
-				}
+				var self = this, facade = this.container.type == exportType ? this : this.facade(), type = typeof(handled) == 'object' ? handled.type : handled
+				if (facade.cache.handlers[type] == null) { facade.cache.handlers[type] = [] }
 				return {
 					through: function(handler) {
-						root.cache[handled.type].push(handler)
+						facade.cache.handlers[type].push(handler)
 					}
 				}
 			},
-			route: function(context) {
-				var root = this.root()
-				if (root.cache[this.type] != null && root.cache[this.type].length > 0) {
-					for (var i=0;i<root.cache[this.type].length;i++) {
-						var nho = root.cache[this.type][i]
-						if (typeof(nho) == 'object') {
-							nho.execute.apply(nho, [context])
-						} else if (typeof(nho) == 'function') {
-							console.log(nho, typeof(nho), nho.type, context)
-							nho.apply(nho, [context])
+			route: function(destination) {
+				var facades = [], type = this.type
+				if (typeof(destination) == 'string') {
+					var root = this.facade().facade()
+					if (destination == '*') {
+						facades = root.cache.instances
+					} else {
+						if (root.cache.instances[destination]) {
+							facades.push(root.cache.instances[destination])
+						}
+					}
+				} else {
+					facades.push(this.facade())
+				}
+				for (var r in facades) {
+					var facade = facades[r]
+					if (facade.cache.handlers[type]) {
+						for (var hk in facade.cache.handlers[type]) {
+							var hh = facade.cache.handlers[type][hk]
+							if (typeof(hh) == 'object') {
+								hh.execute.apply(hh, [this])
+							} else if (typeof(hh) == 'function') {
+								hh.apply(hh, [this])
+							}
 						}
 					}
 				}
@@ -118,4 +131,4 @@
 	}
 	
 	context[exportType] = makeProto()
-}(window);
+}(window ? window : this);
