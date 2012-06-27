@@ -11,6 +11,7 @@ Usage
 > var mvc = new MiniMVC() 
 
 **2. create modules**
+
 var frontend = mvc.get('Module', 'Frontend')
 var backend = mvc.get('Module', 'Backend')
 
