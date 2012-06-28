@@ -29,7 +29,7 @@ Usage
 
 > var command = controller.get('Command', 'MyCommand')
 
-> command.execute = function(note, origin) {
+> command.execute = function(note) {
 
 >   console.info('Executed notification from command', note.data())
 
@@ -58,9 +58,9 @@ Usage
 
 > controller.handle(notification).through(command)
 
-> proxy.handle(notification).through(function(note, origin) { console.info('Executed notification from callback(proxy)', note.data()) })
+> proxy.handle(notification).through(function(note) { console.info('Executed notification from callback(proxy)', note.data()) })
 
-> mediator.handle(notification).through(function(note, origin) { console.info('Executed notification from callback(mediator)', note.data()) })
+> mediator.handle(notification).through(function(note) { console.info('Executed notification from callback(mediator)', note.data()) })
 
 
 **9. Handle notification from other module**
