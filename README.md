@@ -65,7 +65,7 @@ Usage
 
 **9. Handle notification from other module**
 
-> backend.handle(notification).through(function(note, origin) { console.info('Executed notification from backend module', note.data()) })
+> backend.handle(notification).through(function(note) { console.info('Executed notification from backend module', note.data()) })
 
 
 **10. Route the notification (no param, to originating module only, in this case frontend module)**
