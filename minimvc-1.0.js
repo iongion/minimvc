@@ -101,8 +101,8 @@
       route: function(destination) {
         var facades = [], type = this.type
         if (typeof(destination) == 'string') {
+          var root = this.facade().facade()
           if (arguments.length == 1) {
-            var root = this.facade().facade()
             if (destination == '*') {
               facades = root.cache.instances
             } else {
