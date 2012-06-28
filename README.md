@@ -78,11 +78,11 @@ Usage
 > notification.route("*")
 
 
-**12. Route the notification to some modules**
-
-> notification.route(frontend.type, backend.type)
-
-
 **12. Route the notification to a certain module (non originating module)**
 
 > notification.route(backend.type)
+
+
+**13. Route the notification to some modules**
+
+> notification.route(frontend.type, backend.type)
