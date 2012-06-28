@@ -80,7 +80,7 @@ Usage
 
 **12. Route the notification to some modules**
 
-> notification.route([frontend.type, backend.type])
+> notification.route(frontend.type, backend.type)
 
 
 **12. Route the notification to a certain module (non originating module)**
