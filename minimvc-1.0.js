@@ -101,19 +101,21 @@
       route: function(destination) {
         var facades = [], type = this.type
         if (typeof(destination) == 'string') {
-          var root = this.facade().facade()
-          if (destination == '*') {
-            facades = root.cache.instances
-          } else {
-            if (root.cache.instances[destination]) {
-              facades.push(root.cache.instances[destination])
+          if (arguments.length == 1) {
+            var root = this.facade().facade()
+            if (destination == '*') {
+              facades = root.cache.instances
+            } else {
+              if (root.cache.instances[destination]) {
+                facades.push(root.cache.instances[destination])
+              }
             }
-          }
-        } else if (destination instanceof Array) {
-          for (var d in destination) {
-            var df = destination[d]
-            if (root.cache.instances[df]) {
-              facades.push(root.cache.instances[df])
+          } else {
+            for (var d=0;d<arguments.length;d++) {
+              var destination = arguments[d]
+              if (root.cache.instances[destination]) {
+                facades.push(root.cache.instances[destination])
+              }
             }
           }
         } else {
